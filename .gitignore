@@ -1,0 +1,14 @@
+# Build and toolchain outputs (at any depth)
+.zig-cache/
+.zig-cache-*/
+zig-out/
+zig-pkg/
+
+# Pinned Taffy verification checkout (restored by tools/fetch-reference.sh)
+.references/
+
+# Rust build artifacts (bench + parity mirrors)
+target/
+
+# OS noise
+.DS_Store
