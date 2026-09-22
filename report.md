@@ -193,6 +193,18 @@ calc resolver, field-level dirty tracking, parallel subtrees, SIMD batches).
 Memory proxies (Taffy peak live vs port arena capacity): tree creation
 21.2 MB → 15.8 MB; flex row 1.60 MB → 2.04 MB; grid 6.73 MB → 8.81 MB.
 
+**Re-verification (2026-09-22, different host).** All gates re-ran clean on a
+12-core desktop: Taffy XML fixtures **6,084 / 6,084**, differential oracle
+**36 / 36 nodes** (0 mismatches), `zig build test` **87 / 87** and
+`-Dserde=true` **97 / 97** (after fixing the `lazyDependency` panic at
+`build.zig:25` that made a clean-cache serde build abort), and
+`zig build bench-cpu -- --repeat 21 --cpu 2` produced geomean **0.958×**
+CPU-time (tree_creation 0.60× and block_nested 0.77× faster; flex_row 1.10×,
+grid 1.12×, mixed 1.30× slower). The direction matches the round-2 tables —
+port faster overall — but the margin is host-dependent (0.958× here vs
+0.856× on the measured host above); the tables above remain the archived
+reference for that host.
+
 ### 2.5 Size probes (after optimization)
 
 `@sizeOf` / `size_of` measurements from the same toolchain:

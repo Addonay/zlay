@@ -16,7 +16,7 @@ flex/grid largely at parity, mixed workloads 1.08–1.21×).
 | Taffy generated XML fixtures | **6,084 / 6,084** (incl. scroll extents and resolved grid track lists) |
 | Unit tests (`zig build test`) | **87 / 87** (**97 / 97** with `-Dserde=true`) |
 | Differential oracle vs real Taffy (`zig build parity`) | **36 / 36 nodes** |
-| Matched benchmarks (`zig build bench-compare` / `bench-cpu`) | geomean **0.862×** wall / **0.856×** CPU (port faster; best-of-N, pinned CPU) |
+| Matched benchmarks (`zig build bench-compare` / `bench-cpu`) | geomean **0.862×** wall / **0.856×** CPU (port faster; best-of-N, pinned CPU; re-verified **0.958×** CPU on a second host, 2026-09-22 — see report.md §2.4) |
 | Taffy `serde` wire format | validated against Rust-generated JSON (`audit/serde_format_rust.txt`) |
 
 The port is checked in file-by-file against the pinned Rust sources; the parity

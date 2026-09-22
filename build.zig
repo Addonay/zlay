@@ -7,7 +7,7 @@ const std = @import("std");
 // `zig build test` runs the port's unit tests. It is the same root module the
 // parent ZUI build compiles at `src/layout/root.zig`, so a failure here is a
 // port failure, not an integration failure.
-pub fn build(b: *std.Build) void {
+pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
@@ -22,7 +22,12 @@ pub fn build(b: *std.Build) void {
     module_imports[import_count] = .{ .name = "zlay_options", .module = build_options.createModule() };
     import_count += 1;
     if (enable_serde) {
-        const serde_dep = b.lazyDependency("serde", .{}) orelse @panic("serde dependency is missing from build.zig.zon");
+        // Lazy-fetch contract (std.Build.dependencyLazy): when `serde` has not
+        // been fetched yet this reports `error.LazyDependencyNeeded` after
+        // marking it needed; propagating lets the build runner fetch it and
+        // re-run this script. The previous `lazyDependency(...) orelse @panic`
+        // aborted `-Dserde=true` from a clean cache instead of fetching.
+        const serde_dep = try b.dependencyLazy("serde", .{});
         module_imports[import_count] = .{ .name = "serde", .module = serde_dep.module("serde") };
         import_count += 1;
     }
